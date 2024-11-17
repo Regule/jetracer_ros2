@@ -21,6 +21,9 @@ ament_target_dependencies(
   rclcpp
 )
 
+install(TARGETS jet_racer_api
+  DESTINATION lib/${PROJECT_NAME})
+
 install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}

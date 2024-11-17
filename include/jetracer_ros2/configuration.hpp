@@ -18,6 +18,8 @@ public:
 
   const char* DESCRIPTION_PORT_NAME =
   "path to port file, for exmample \"/dev/ttyACM0\"";
+  const char* DESCRIPTION_BAUD_RATE =
+  "serial port baudrate";
 
 public:
   std::string port_name;
@@ -29,6 +31,6 @@ public:
   void print_config(rclcpp::Node *node);
 };
 
-};  // namespace jetracer_ros2
+}  // namespace jetracer_ros2
 
 #endif  // JETRACER_ROS2__CONFIGURATION_HPP_
