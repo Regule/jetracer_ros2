@@ -26,10 +26,54 @@ public:
   int baud_rate;
 
 public:
-  void declare_parameters(rclcpp::Node *node);
-  void update_parameters(rclcpp::Node *node);
-  void print_config(rclcpp::Node *node);
+  void declare(rclcpp::Node *node);
+  void update(rclcpp::Node *node);
+  void print(rclcpp::Node *node);
 };
+
+class PidConfig
+{
+public:
+  const char* PARAM_PROPORTIONAL = "pid_proportional";
+  const char* PARAM_INTEGRAL = "pid_integral";
+  const char* PARAM_DERIVATIVE = "pid_derivative";
+
+  int DEFAULT_PROPORTIONAL = 1;
+  int DEFAULT_INTEGRAL = 1;
+  int DEFAULT_DERIVATIVE = 1;
+
+
+  const char* DESCRIPTION_PROPORTIONAL =
+  "proportional factor of PID";
+  const char* DESCRIPTION_INTEGRAL =
+  "integral factor of PID";
+  const char* DESCRIPTION_DERIVATIVE =
+  "derivative factor of PID";
+
+public:
+  int proportional;
+  int integral;
+  int derivative;
+
+public:
+  void declare(rclcpp::Node *node);
+  void update(rclcpp::Node *node);
+  void print(rclcpp::Node *node);
+};
+
+
+class JetRacerConfig
+{
+public:
+  SerialConfig serial;
+  PidConfig pid;
+
+public:
+  void declare(rclcpp::Node *node);
+  void update(rclcpp::Node *node);
+  void print(rclcpp::Node *node);
+};
+
 
 }  // namespace jetracer_ros2
 

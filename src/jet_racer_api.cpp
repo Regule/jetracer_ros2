@@ -11,10 +11,10 @@ public:
 
 JetRacerApiNode::JetRacerApiNode(): Node("jet_racer_api")
 {
-    SerialConfig conf;
-    conf.declare_parameters(this);
-    conf.update_parameters(this);
-    conf.print_config(this);
+    JetRacerConfig conf;
+    conf.declare(this);
+    conf.update(this);
+    conf.print(this);
 
 }
 
