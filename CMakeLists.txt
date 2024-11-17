@@ -10,27 +10,23 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 
-add_library(configuration src/configuration.cpp)
-add_library(jetracer_ros2::configuration ALIAS configuration)
-target_compile_features(configuration PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-target_include_directories(configuration PUBLIC
+
+add_executable(jet_racer_api src/jet_racer_api.cpp src/configuration.cpp)
+target_include_directories(jet_racer_api PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(
-  configuration
-  "rclcpp"
+  jet_racer_api
+  rclcpp
 )
-
-# Causes the visibility macros to use dllexport rather than dllimport,
-# which is appropriate when building the dll but not consuming it.
-target_compile_definitions(configuration PRIVATE "JETRACER_ROS2_BUILDING_LIBRARY")
 
 install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
 )
 install(
-  TARGETS configuration
+  TARGETS jet_racer_api
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

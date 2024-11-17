@@ -29,6 +29,6 @@ public:
   void print_config(rclcpp::Node *node);
 };
 
-}  // namespace jetracer_ros2
+};  // namespace jetracer_ros2
 
 #endif  // JETRACER_ROS2__CONFIGURATION_HPP_
