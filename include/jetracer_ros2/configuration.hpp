@@ -2,6 +2,8 @@
 #define JETRACER_ROS2__CONFIGURATION_HPP_
 
 #include <string>
+#include <vector>
+#include <sstream>
 #include "rclcpp/rclcpp.hpp"
 
 namespace jetracer_ros2
@@ -61,12 +63,43 @@ public:
   void print(rclcpp::Node *node);
 };
 
+class CalibrationConfig
+{
+public:
+  const char* PARAM_LINEAR_CORRECTION = "linear_correction";
+  const char* PARAM_SERVO_BIAS = "servo_bias";
+  const char* PARAM_CALIBRATION_COEFFICENTS = "callibration_coefficents";
+ 
+  const float DEFAULT_LINEAR_CORRECTION = 1.0;
+  const int DEFAULT_SERVO_BIAS = 1;
+  const std::vector<double> DEFAULT_CALIBRATION_COEFFICENTS = {0.0, 0.0,};
+ 
+
+  const char* DESCRIPTION_LINEAR_CORRECTION =
+  "linear correction";
+  const char* DESCRIPTION_SERVO_BIAS =
+  "servo bias";
+  const char* DESCRIPTION_CALIBRATION_COEFFICENTS =
+  "Coefficient of quartic equation for Steering calibration";
+ 
+public:
+  float linear_correction;
+  int servo_bias;
+  std::vector<double> coefficents;
+
+public:
+  void declare(rclcpp::Node *node);
+  void update(rclcpp::Node *node);
+  void print(rclcpp::Node *node);
+};
+
 
 class JetRacerConfig
 {
 public:
   SerialConfig serial;
   PidConfig pid;
+  CalibrationConfig calibration;
 
 public:
   void declare(rclcpp::Node *node);
