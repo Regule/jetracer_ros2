@@ -72,7 +72,7 @@ public:
  
   const float DEFAULT_LINEAR_CORRECTION = 1.0;
   const int DEFAULT_SERVO_BIAS = 1;
-  const std::vector<double> DEFAULT_CALIBRATION_COEFFICENTS = {0.0, 0.0,};
+  const std::vector<double> DEFAULT_CALIBRATION_COEFFICENTS = {-0.016073, 0.176183, -23.428084, 1500};
  
 
   const char* DESCRIPTION_LINEAR_CORRECTION =
@@ -97,9 +97,18 @@ public:
 class JetRacerConfig
 {
 public:
+  const char* PARAM_PUBLISH_ODOMETRY_TRANSFORM = "publish_odometry_transform";
+
+  const bool DEFAULT_PUBLISH_ODOMETRY_TRANSFORM = true;
+
+  const char* DESCRIPTION_PUBLISH_ODOMETRY_TRANSFORM =
+  "publish odometry transform";
+
+public:
   SerialConfig serial;
   PidConfig pid;
   CalibrationConfig calibration;
+  bool publish_odometry_transform;
 
 public:
   void declare(rclcpp::Node *node);

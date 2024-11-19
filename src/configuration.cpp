@@ -91,6 +91,12 @@ namespace jetracer_ros2
     serial.declare(node);
     pid.declare(node);
     calibration.declare(node);
+
+    auto descriptor = rcl_interfaces::msg::ParameterDescriptor();
+
+    descriptor.description = DESCRIPTION_PUBLISH_ODOMETRY_TRANSFORM;
+    node->declare_parameter(PARAM_PUBLISH_ODOMETRY_TRANSFORM, DEFAULT_PUBLISH_ODOMETRY_TRANSFORM, descriptor);
+
   }
 
   void JetRacerConfig::update(rclcpp::Node *node)
@@ -98,6 +104,7 @@ namespace jetracer_ros2
     serial.update(node);
     pid.update(node);
     calibration.update(node);
+    this->publish_odometry_transform = node->get_parameter(PARAM_PUBLISH_ODOMETRY_TRANSFORM).as_bool();
   }
 
   void JetRacerConfig::print(rclcpp::Node *node)
@@ -105,6 +112,7 @@ namespace jetracer_ros2
     serial.print(node);
     pid.print(node);
     calibration.print(node);
+    RCLCPP_INFO(node->get_logger(), "Parameter %s = %s", PARAM_PUBLISH_ODOMETRY_TRANSFORM, this->publish_odometry_transform?"true":"false");
   }
 
 
