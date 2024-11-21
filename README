@@ -1,0 +1,2 @@
+Dependencies:
+ - serial : git@github.com:RoverRobotics-forks/serial-ros2.git

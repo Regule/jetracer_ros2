@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(serial REQUIRED)
 
 
 add_executable(jet_racer_api src/jet_racer_api.cpp src/configuration.cpp)
