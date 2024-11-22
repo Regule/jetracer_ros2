@@ -22,7 +22,18 @@ ament_target_dependencies(
   rclcpp
 )
 
-install(TARGETS jet_racer_api
+add_executable(test_serial src/test_serial.cpp src/configuration.cpp)
+target_include_directories(test_serial PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+ament_target_dependencies(
+  test_serial
+  rclcpp
+  serial
+)
+
+install(TARGETS jet_racer_api test_serial
   DESTINATION lib/${PROJECT_NAME})
 
 install(
@@ -30,7 +41,7 @@ install(
   DESTINATION include/${PROJECT_NAME}
 )
 install(
-  TARGETS jet_racer_api
+  TARGETS jet_racer_api test_serial
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

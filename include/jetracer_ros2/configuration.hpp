@@ -12,20 +12,25 @@ namespace jetracer_ros2
 class SerialConfig
 {
 public:
-  const char* PARAM_PORT_NAME = "port_name";
-  const char* PARAM_BAUD_RATE = "baud_rate";
+  static constexpr const char* PARAM_PORT_NAME = "port_name";
+  static constexpr const char* PARAM_BAUD_RATE = "baud_rate";
+  static constexpr const char* PARAM_TIMEOUT_MS = "timeout_ms";
 
-  const std::string DEFAULT_PORT_NAME = std::string("/dev/ttyACM0");
-  const int DEFAULT_BAUD_RATE = 115200;
+  static constexpr const char* DEFAULT_PORT_NAME = "/dev/ttyACM0";
+  static constexpr int DEFAULT_BAUD_RATE = 115200;
+  static constexpr int DEFAULT_TIMEOUT_MS = 1000;
 
-  const char* DESCRIPTION_PORT_NAME =
+  static constexpr const char* DESCRIPTION_PORT_NAME =
   "path to port file, for exmample \"/dev/ttyACM0\"";
-  const char* DESCRIPTION_BAUD_RATE =
+  static constexpr const char* DESCRIPTION_BAUD_RATE =
   "serial port baudrate";
+  static constexpr const char* DESCRIPTION_TIMEOUT_MS =
+  "timeout in milliseconds";
 
 public:
   std::string port_name;
   int baud_rate;
+  int timeout_ms;
 
 public:
   void declare(rclcpp::Node *node);
@@ -36,20 +41,20 @@ public:
 class PidConfig
 {
 public:
-  const char* PARAM_PROPORTIONAL = "pid_proportional";
-  const char* PARAM_INTEGRAL = "pid_integral";
-  const char* PARAM_DERIVATIVE = "pid_derivative";
+  static constexpr const char* PARAM_PROPORTIONAL = "pid_proportional";
+  static constexpr const char* PARAM_INTEGRAL = "pid_integral";
+  static constexpr const char* PARAM_DERIVATIVE = "pid_derivative";
 
-  int DEFAULT_PROPORTIONAL = 1;
-  int DEFAULT_INTEGRAL = 1;
-  int DEFAULT_DERIVATIVE = 1;
+  static constexpr int DEFAULT_PROPORTIONAL = 1;
+  static constexpr int DEFAULT_INTEGRAL = 1;
+  static constexpr int DEFAULT_DERIVATIVE = 1;
 
 
-  const char* DESCRIPTION_PROPORTIONAL =
+  static constexpr const char* DESCRIPTION_PROPORTIONAL =
   "proportional factor of PID";
-  const char* DESCRIPTION_INTEGRAL =
+  static constexpr const char* DESCRIPTION_INTEGRAL =
   "integral factor of PID";
-  const char* DESCRIPTION_DERIVATIVE =
+  static constexpr const char* DESCRIPTION_DERIVATIVE =
   "derivative factor of PID";
 
 public:
@@ -66,20 +71,20 @@ public:
 class CalibrationConfig
 {
 public:
-  const char* PARAM_LINEAR_CORRECTION = "linear_correction";
-  const char* PARAM_SERVO_BIAS = "servo_bias";
-  const char* PARAM_CALIBRATION_COEFFICENTS = "callibration_coefficents";
+  static constexpr const char* PARAM_LINEAR_CORRECTION = "linear_correction";
+  static constexpr const char* PARAM_SERVO_BIAS = "servo_bias";
+  static constexpr const char* PARAM_CALIBRATION_COEFFICENTS = "callibration_coefficents";
  
-  const float DEFAULT_LINEAR_CORRECTION = 1.0;
-  const int DEFAULT_SERVO_BIAS = 1;
-  const std::vector<double> DEFAULT_CALIBRATION_COEFFICENTS = {-0.016073, 0.176183, -23.428084, 1500};
+  static constexpr float DEFAULT_LINEAR_CORRECTION = 1.0;
+  static constexpr int DEFAULT_SERVO_BIAS = 1;
+  static constexpr double DEFAULT_CALIBRATION_COEFFICENTS[4] = {-0.016073, 0.176183, -23.428084, 1500};
  
 
-  const char* DESCRIPTION_LINEAR_CORRECTION =
+  static constexpr const char* DESCRIPTION_LINEAR_CORRECTION =
   "linear correction";
-  const char* DESCRIPTION_SERVO_BIAS =
+  static constexpr const char* DESCRIPTION_SERVO_BIAS =
   "servo bias";
-  const char* DESCRIPTION_CALIBRATION_COEFFICENTS =
+  static constexpr const char* DESCRIPTION_CALIBRATION_COEFFICENTS =
   "Coefficient of quartic equation for Steering calibration";
  
 public:
@@ -97,11 +102,11 @@ public:
 class JetRacerConfig
 {
 public:
-  const char* PARAM_PUBLISH_ODOMETRY_TRANSFORM = "publish_odometry_transform";
+  static constexpr const char* PARAM_PUBLISH_ODOMETRY_TRANSFORM = "publish_odometry_transform";
 
-  const bool DEFAULT_PUBLISH_ODOMETRY_TRANSFORM = true;
+  static constexpr bool DEFAULT_PUBLISH_ODOMETRY_TRANSFORM = true;
 
-  const char* DESCRIPTION_PUBLISH_ODOMETRY_TRANSFORM =
+  static constexpr const char* DESCRIPTION_PUBLISH_ODOMETRY_TRANSFORM =
   "publish odometry transform";
 
 public:

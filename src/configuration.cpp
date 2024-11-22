@@ -11,18 +11,22 @@ namespace jetracer_ros2
     node->declare_parameter(PARAM_PORT_NAME, DEFAULT_PORT_NAME, descriptor);
     descriptor.description = DESCRIPTION_BAUD_RATE;
     node->declare_parameter(PARAM_BAUD_RATE, DEFAULT_BAUD_RATE, descriptor);
+    descriptor.description = DESCRIPTION_TIMEOUT_MS;
+    node->declare_parameter(PARAM_TIMEOUT_MS, DEFAULT_TIMEOUT_MS, descriptor);
   }
 
   void SerialConfig::update(rclcpp::Node *node)
   {
     this->port_name = node->get_parameter(PARAM_PORT_NAME).as_string();
     this->baud_rate = node->get_parameter(PARAM_BAUD_RATE).as_int();
+    this->timeout_ms = node->get_parameter(PARAM_TIMEOUT_MS).as_int();
   }
 
   void SerialConfig::print(rclcpp::Node *node)
   {
     RCLCPP_INFO(node->get_logger(), "Parameter %s = %s", PARAM_PORT_NAME, this->port_name.c_str());
     RCLCPP_INFO(node->get_logger(), "Parameter %s = %d", PARAM_BAUD_RATE, this->baud_rate);
+    RCLCPP_INFO(node->get_logger(), "Parameter %s = %d", PARAM_TIMEOUT_MS, this->timeout_ms);
   }
 
   void PidConfig::declare(rclcpp::Node *node)
@@ -61,7 +65,8 @@ namespace jetracer_ros2
     node->declare_parameter(PARAM_SERVO_BIAS, DEFAULT_SERVO_BIAS, descriptor);
     descriptor.description = DESCRIPTION_CALIBRATION_COEFFICENTS;
     // TODO: Addd limits so that the range of float (instead of double) will not be exceeded
-    node->declare_parameter(PARAM_CALIBRATION_COEFFICENTS, DEFAULT_CALIBRATION_COEFFICENTS, descriptor);
+    std::vector<double> default_calibration_coefficents(DEFAULT_CALIBRATION_COEFFICENTS, DEFAULT_CALIBRATION_COEFFICENTS+4);
+    node->declare_parameter(PARAM_CALIBRATION_COEFFICENTS, default_calibration_coefficents, descriptor);
   }
 
   void CalibrationConfig::update(rclcpp::Node *node)
