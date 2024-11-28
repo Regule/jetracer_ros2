@@ -1,32 +1,46 @@
-#include "jetracer_ros2/configuration.hpp"
-#include "serial/serial.h"
+#include "jetracer_ros2/jet_racer_api.hpp"
 
 namespace jetracer_ros2
 {
 
-class JetRacerApi
+JetRacerDataPack& JetRacerDataPack::operator<<(char value)
 {
-public:
-    JetRacerApi(const std::string address, int baudrate);
-    void write_params(int p,int i, int d, double linear_correction, int servo_bias);
-    void write_coefficents(const std::vector<float> coefficents);
-    void write_velocity(double x, double y, double yaw);
+    _data.push_back(value);
+    return *this;
+}
 
-private:
-    static constexpr const char _HEADER[] = {0xAA, 0x55}; 
-    static constexpr const char _MSG_TYPE_PARAMS[] = {0x0F, 0x12};
-    static constexpr const char _MSG_TYPE_COEFFICENTS[] = {0x15, 0x13};
-    static constexpr const char _MSG_TYPE_VELOCITY[] = {0x0b, 0x11};
+JetRacerDataPack& JetRacerDataPack::operator<<(int value)
+{
+    *this << ((value>>8) & 0xff);
+    *this << (value & 0xff);
+    return *this;
+}
 
-private:
-    std::unique_ptr<serial::Serial> _port;
+JetRacerDataPack& JetRacerDataPack::operator<<(double value)
+{
+  *this << ((int16_t)((int16_t)(value*1000)>>8)&0xff);
+  *this << ((int16_t)(value*1000)&0xff);
+  return *this;
+}
 
-private:
-    void write_to_data(std::vector<char> &data, size_t index, int value);
-    void write_to_data(std::vector<char> &data, size_t index, double value);
-};
+char JetRacerDataPack::_calculate_checksum() const
+{
+    char sum = 0x00;
+    for(char value: _data)
+    {
+        sum += value;
+    }
+    return sum;
+}
 
+std::vector<char> JetRacerDataPack::get_datapack() const
+{
+    std::vector<char> data{std::begin(_data), std::end(_data)};
+    data.push_back(_calculate_checksum());
+    return data;
+}
 
+/*
 class JetRacerApiNode: public rclcpp::Node
 {
 public:
@@ -42,14 +56,6 @@ JetRacerApiNode::JetRacerApiNode(): Node("jet_racer_api")
     conf.print(this);
 
 }
+*/
 
-}
-
-int main(int argc, char **argv)
-{
-    rclcpp::init(argc,argv);
-    auto node = std::make_shared<jetracer_ros2::JetRacerApiNode>();
-    rclcpp::spin(node);
-    rclcpp::shutdown();
-    return 0;
 }
