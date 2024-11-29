@@ -11,15 +11,15 @@ JetRacerDataPack& JetRacerDataPack::operator<<(char value)
 
 JetRacerDataPack& JetRacerDataPack::operator<<(int value)
 {
-    *this << ((value>>8) & 0xff);
-    *this << (value & 0xff);
+    *this << (char)((value>>8) & 0xff);
+    *this << (char)(value & 0xff);
     return *this;
 }
 
 JetRacerDataPack& JetRacerDataPack::operator<<(double value)
 {
-  *this << ((int16_t)((int16_t)(value*1000)>>8)&0xff);
-  *this << ((int16_t)(value*1000)&0xff);
+  *this << (char)((int16_t)((int16_t)(value*1000)>>8)&0xff);
+  *this << (char)((int16_t)(value*1000)&0xff);
   return *this;
 }
 
@@ -39,23 +39,5 @@ std::vector<char> JetRacerDataPack::get_datapack() const
     data.push_back(_calculate_checksum());
     return data;
 }
-
-/*
-class JetRacerApiNode: public rclcpp::Node
-{
-public:
-    JetRacerApiNode();
-
-};
-
-JetRacerApiNode::JetRacerApiNode(): Node("jet_racer_api")
-{
-    JetRacerConfig conf;
-    conf.declare(this);
-    conf.update(this);
-    conf.print(this);
-
-}
-*/
 
 }

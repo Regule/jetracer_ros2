@@ -11,42 +11,64 @@ find_package(ament_cmake_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(serial REQUIRED)
 
+# LIBRARY
+add_library(jet_racer_api SHARED src/jet_racer_api.cpp src/configuration.cpp)
+target_include_directories(jet_racer_api
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
+target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17) 
+ament_target_dependencies(jet_racer_api 
+  rclcpp
+  serial
+)
 
-add_executable(jet_racer_api src/jet_racer_api.cpp src/configuration.cpp)
-target_include_directories(jet_racer_api PUBLIC
+# NODE
+add_executable(jet_racer_node src/jet_racer_node.cpp)
+target_include_directories(jet_racer_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-ament_target_dependencies(
+target_compile_features(jet_racer_node PUBLIC c_std_99 cxx_std_17) 
+target_link_libraries(jet_racer_node
   jet_racer_api
+)
+ament_target_dependencies(jet_racer_node
   rclcpp
 )
 
-add_executable(test_serial src/test_serial.cpp src/configuration.cpp)
+add_executable(test_serial src/test_serial.cpp)
 target_include_directories(test_serial PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_link_libraries(test_serial
+  jet_racer_api
+)
 ament_target_dependencies(
   test_serial
   rclcpp
   serial
 )
 
-install(TARGETS jet_racer_api test_serial
-  DESTINATION lib/${PROJECT_NAME})
-
 install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
 )
+
 install(
-  TARGETS jet_racer_api test_serial
+  TARGETS jet_racer_api 
   EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
+
+install(TARGETS jet_racer_node test_serial
+  DESTINATION lib/${PROJECT_NAME})
+
+
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
