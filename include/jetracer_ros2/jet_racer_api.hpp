@@ -10,14 +10,14 @@ namespace jetracer_ros2
 class JetRacerDataPack
 {
 public:
-    JetRacerDataPack& operator<<(char value);
+    JetRacerDataPack& operator<<(uint8_t value);
     JetRacerDataPack& operator<<(int value);
     JetRacerDataPack& operator<<(double value);
     template <typename data_type> JetRacerDataPack& operator<<(std::vector<data_type> value_vector);
-    std::vector<char> get_datapack() const;
+    std::vector<uint8_t> get_datapack() const;
 
 private:
-    std::list<char> _data;
+    std::list<uint8_t> _data;
 private:
     char _calculate_checksum() const;
 };
