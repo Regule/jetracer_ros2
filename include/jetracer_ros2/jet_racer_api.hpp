@@ -13,7 +13,7 @@ public:
     JetRacerDataPack& operator<<(uint8_t value);
     JetRacerDataPack& operator<<(int value);
     JetRacerDataPack& operator<<(double value);
-    template <typename data_type> JetRacerDataPack& operator<<(std::vector<data_type> value_vector);
+    template <typename data_type> JetRacerDataPack& operator<<(const std::vector<data_type> &value_vector);
     std::vector<uint8_t> get_datapack() const;
 
 private:
@@ -21,6 +21,12 @@ private:
 private:
     char _calculate_checksum() const;
 };
+
+
+const std::vector<uint8_t> MSG_HEADER = {(uint8_t)0xAA, (uint8_t)0x55}; 
+const std::vector<uint8_t> MSG_TYPE_PARAMS = {(uint8_t)0x0F, (uint8_t)0x12};
+const std::vector<uint8_t> MSG_TYPE_COEFFICENTS = {(uint8_t)0x15, (uint8_t)0x13};
+const std::vector<uint8_t> MSG_TYPE_VELOCITY = {(uint8_t)0x0b, (uint8_t)0x11};
 
 /*
 class JetRacerApi
@@ -32,10 +38,7 @@ public:
     void write_velocity(double x, double y, double yaw);
 
 private:
-    static constexpr const char _HEADER[] = {0xAA, 0x55}; 
-    static constexpr const char _MSG_TYPE_PARAMS[] = {0x0F, 0x12};
-    static constexpr const char _MSG_TYPE_COEFFICENTS[] = {0x15, 0x13};
-    static constexpr const char _MSG_TYPE_VELOCITY[] = {0x0b, 0x11};
+
 
 private:
     std::unique_ptr<serial::Serial> _port;
@@ -47,7 +50,7 @@ private:
 */
 
 
-template <typename data_type> JetRacerDataPack& JetRacerDataPack::operator<<(std::vector<data_type> value_vector)
+template <typename data_type> JetRacerDataPack& JetRacerDataPack::operator<<(const std::vector<data_type> &value_vector)
 {
     for(data_type value: value_vector)
     {

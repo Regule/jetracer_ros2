@@ -80,7 +80,7 @@ SerialTestNode::SerialTestNode(): Node("serial_test")
 
     auto reference = SetParams(p,i,d,linear_correction,servo_bias);
     JetRacerDataPack data_pack_stream;
-    data_pack_stream << (uint8_t)0xAA << (uint8_t)0x55 << (uint8_t)0x0F << (uint8_t)0x12 << p << i << d << linear_correction << servo_bias;
+    data_pack_stream << jetracer_ros2::MSG_HEADER << jetracer_ros2::MSG_TYPE_PARAMS << p << i << d << linear_correction << servo_bias;
     auto data_pack = data_pack_stream.get_datapack();
     if(data_pack.size() != reference.size())
     {
