@@ -38,14 +38,8 @@ public:
     void write_velocity(double x, double y, double yaw);
 
 private:
-
-
-private:
     std::unique_ptr<serial::Serial> _port;
 
-private:
-    void write_to_data(std::vector<char> &data, size_t index, int value);
-    void write_to_data(std::vector<char> &data, size_t index, double value);
 };
 */
 
