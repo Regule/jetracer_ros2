@@ -19,6 +19,7 @@ target_include_directories(jet_racer_api
     $<INSTALL_INTERFACE:include>
 )
 target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17) 
+target_compile_options(jet_racer_api PRIVATE -fPIC)
 ament_target_dependencies(jet_racer_api 
   rclcpp
   serial
@@ -30,6 +31,7 @@ target_include_directories(jet_racer_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_compile_features(jet_racer_node PUBLIC c_std_99 cxx_std_17) 
+target_compile_options(jet_racer_api PRIVATE -fPIC)
 target_link_libraries(jet_racer_node
   jet_racer_api
 )
@@ -42,13 +44,12 @@ target_include_directories(test_serial PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_options(jet_racer_api PRIVATE -fPIC)
 target_link_libraries(test_serial
   jet_racer_api
 )
-ament_target_dependencies(
-  test_serial
+ament_target_dependencies(test_serial
   rclcpp
-  serial
 )
 
 install(

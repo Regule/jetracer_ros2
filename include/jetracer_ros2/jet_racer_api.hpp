@@ -28,11 +28,11 @@ const std::vector<uint8_t> MSG_TYPE_PARAMS = {(uint8_t)0x0F, (uint8_t)0x12};
 const std::vector<uint8_t> MSG_TYPE_COEFFICENTS = {(uint8_t)0x15, (uint8_t)0x13};
 const std::vector<uint8_t> MSG_TYPE_VELOCITY = {(uint8_t)0x0b, (uint8_t)0x11};
 
-/*
+
 class JetRacerApi
 {
 public:
-    JetRacerApi(const std::string address, int baudrate);
+    JetRacerApi(const std::string address, int baudrate, int timeout_ms);
     void write_params(int p,int i, int d, double linear_correction, int servo_bias);
     void write_coefficents(const std::vector<float> coefficents);
     void write_velocity(double x, double y, double yaw);
@@ -41,7 +41,7 @@ private:
     std::unique_ptr<serial::Serial> _port;
 
 };
-*/
+
 
 
 template <typename data_type> JetRacerDataPack& JetRacerDataPack::operator<<(const std::vector<data_type> &value_vector)

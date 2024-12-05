@@ -40,4 +40,38 @@ std::vector<uint8_t> JetRacerDataPack::get_datapack() const
     return data;
 }
 
+
+JetRacerApi::JetRacerApi(const std::string address, int baudrate, int timeout_ms)
+{
+    _port = std::make_unique<serial::Serial>(address,
+                                             baudrate,
+                                             serial::Timeout::simpleTimeout(timeout_ms)
+                                             );
+}
+
+void JetRacerApi::write_params(int p,int i, int d, double linear_correction, int servo_bias)
+{
+    JetRacerDataPack data_pack_stream;
+    data_pack_stream << MSG_HEADER << MSG_TYPE_PARAMS << p << i << d << linear_correction << servo_bias;
+    auto data_pack = data_pack_stream.get_datapack();
+    _port->write(data_pack);
+}
+
+void JetRacerApi::write_coefficents(const std::vector<float> coefficents)
+{
+    JetRacerDataPack data_pack_stream;
+    data_pack_stream << MSG_HEADER << MSG_TYPE_COEFFICENTS << coefficents;
+    auto data_pack = data_pack_stream.get_datapack();
+    _port->write(data_pack);
+}
+
+void JetRacerApi::write_velocity(double x, double y, double yaw)
+{
+    JetRacerDataPack data_pack_stream;
+    data_pack_stream << MSG_HEADER << MSG_TYPE_VELOCITY << x << y << yaw;
+    auto data_pack = data_pack_stream.get_datapack();
+    _port->write(data_pack);
+}
+
+
 }
