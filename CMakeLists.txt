@@ -11,59 +11,34 @@ find_package(ament_cmake_ros REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(serial REQUIRED)
 
-# LIBRARY
-add_library(jet_racer_api SHARED src/jet_racer_api.cpp src/configuration.cpp)
-target_include_directories(jet_racer_api
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
-target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17) 
-target_compile_options(jet_racer_api PRIVATE -fPIC)
-ament_target_dependencies(jet_racer_api 
-  rclcpp
-  serial
-)
 
 # NODE
-add_executable(jet_racer_node src/jet_racer_node.cpp)
+add_executable(jet_racer_node 
+                src/jet_racer_node.cpp
+                src/jet_racer_api.cpp
+                src/configuration.cpp)
 target_include_directories(jet_racer_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
 target_compile_features(jet_racer_node PUBLIC c_std_99 cxx_std_17) 
-target_compile_options(jet_racer_api PRIVATE -fPIC)
-target_link_libraries(jet_racer_node
-  jet_racer_api
-)
 ament_target_dependencies(jet_racer_node
   rclcpp
+  serial
 )
 
-add_executable(test_serial src/test_serial.cpp)
+add_executable(test_serial 
+                src/test_serial.cpp
+                src/jet_racer_api.cpp
+                src/configuration.cpp)
 target_include_directories(test_serial PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-target_compile_features(jet_racer_api PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-target_compile_options(jet_racer_api PRIVATE -fPIC)
-target_link_libraries(test_serial
-  jet_racer_api
-)
+target_compile_features(test_serial PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 ament_target_dependencies(test_serial
   rclcpp
+  serial
 )
 
-install(
-  DIRECTORY include/
-  DESTINATION include/${PROJECT_NAME}
-)
-
-install(
-  TARGETS jet_racer_api 
-  EXPORT export_${PROJECT_NAME}
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
 
 install(TARGETS jet_racer_node test_serial
   DESTINATION lib/${PROJECT_NAME})
@@ -83,14 +58,8 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_export_include_directories(
-  "include/${PROJECT_NAME}"
-)
-ament_export_libraries(
-  jet_racer_api
-)
-ament_export_targets(
-  export_${PROJECT_NAME}
-)
+#ament_export_targets(
+#  export_${PROJECT_NAME}
+#)
 
 ament_package()
